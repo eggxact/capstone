@@ -9,7 +9,7 @@ The Calendinner application will automatically populate a one-month calendar wit
 - I would like to change meals/dates if I want to. 
 - I would like to periodically repeat the resaurants and home cooked meals that I rate highly and avoid the ones that I rate poorly. 
 - I would like to coordinate with other users to plan meals together. (NTH)
-- I would like the option to share my calendar availabilitise with specific users. (NTH) 
+- I would like the option to share my calendar availabilities with specific users. (NTH) 
 
 ## Tasks
 1. Build out Django app:
@@ -17,7 +17,7 @@ The Calendinner application will automatically populate a one-month calendar wit
     * Login
     * Logout
     * User Profile
-2. Design and build interctivity for user and Calendinner Profile Page:
+2. Design and build interactivity for user and Calendinner Profile Page:
     * Preferences Filter
         - Budget Constraints
         - Food Categories
@@ -50,7 +50,10 @@ The Calendinner application will automatically populate a one-month calendar wit
     - Date Detail View
 8. Connect User Preferences with Calendar
 
+
 ### Phase 2
 1. Add functionality for sending invitations to Users Contact List 
 2. Add functionality for users to coordinate meals between themselves
 3. Add permissions for users to grant limited permissions on calendar availability 
+4. Allow Users to adjust both Meals and Dates
+5. Add functionality for user to search through list of Restaurants and Meals within Application. 
