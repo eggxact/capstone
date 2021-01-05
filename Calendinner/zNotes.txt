@@ -1,0 +1,9 @@
+What is Phase 1 - Minimum Viable Product?
+
+Landing page with Sign up and Login features
+
+User Dashboard with:
+    * Calendar that has the functionality to populate itself with:
+        - dine out meals
+        - home cooked meals
+    * Based on preferences

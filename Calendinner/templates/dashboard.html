@@ -3,10 +3,14 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    Hi {{ user.username }}!
+    {{ user.username }}!
     <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
     <a href="{% url 'login' %}">Log In</a>
     <a href="{% url 'signup' %}">Sign Up</a>
 {% endif %}
+<div id="dashboard">
+    
+</div>
+
 {% endblock %}
