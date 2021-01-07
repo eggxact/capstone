@@ -1,21 +1,37 @@
 Vue.component("user-info", {
     template: `
         <div id="user-address">
-            <input type="text" v-model="street" placeholder="Street Address">
-            <input type="text" v-model="city" placeholder="City">
-            <input type="text" v-model="state" placeholder="State">
-            <input type="text" v-model="zipcode" placeholder="Zip Code">
-            <button type="submit" @click="addAddress">Submit</button><br>
-            <button @click="getPlaces" type="submit">Find places</button>
+            <input v-model="street" type="text" placeholder="street">
+            <input v-model="city" type="text" placeholder="city">
+            <input v-model="state" type="text" placeholder="state">
+            <input v-model="zipcode" type="text" placeholder="zip code">
+            <br>
+            <button @click="getLocation" type="submit">Update Address</button>
+            <div v-for="location in locations" :key=location id="address-verification">
+                <p>{{ location.formatted_address }}</p>
+                <button type="submit" @click="submitLocation(location)">This is my address</button>
+            </div>
         </div>
     `,
     data: function () {
         return {
+            locations: {},
             street: '',
             city: '',
             state: '',
             zipcode: '',
-            places: {},
+            lat: '',
+            lng: '',
+
+        }
+    },
+    created: {
+        getUser: function () {
+            axios({
+                method: 'get',
+                url: 'api/v1/',
+                
+            })
         }
     },
     computed: {
@@ -24,7 +40,7 @@ Vue.component("user-info", {
         }
     },
     methods: {
-        getPlaces: function () {
+        getLocation: function () {
             axios({
                 method: 'get',
                 url: "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json",
@@ -35,20 +51,48 @@ Vue.component("user-info", {
                     fields: "formatted_address,name,geometry",
                 },
             }).then( response => {
-                this.places = response.data
-                console.log(this.places)
+                this.locations = response.data.candidates
+                console.log(this.locations)
             })
-        }
+        },
+        submitLocation: function (location) {
+            axios({
+                method: "patch",
+                url: `/api/v1/users/1`,
+                headers: {
+                    'X-CSRFToken': this.csrf_token
+                },
+                data: location
+            }).then(response => {
+                console.log(location)
+            }).catch(error => {
+                console.log(error.response.data)
+            })
+              
+        },
     },
 })
 
-Vue.component("get-places", {
-
-    
-})
 let vm = new Vue ({
     el: '#dashboard',
-    // created: function () {
-    //     this.loadPreferences()
-    // }
 })
+
+// methods: {
+        //     getLocation: function () {
+        //         axios({
+        //             method: "get",
+        //             url: "http://www.mapquestapi.com/geocoding/v1/address",
+        //             params: {
+        //                 key: "XrRARpiA1UUYmTV52MRug56U8Qjb5vyA",
+        //                 location: this.userAddress, 
+        //             },
+        //         }).then(response => {
+        //             this.locations = response.data.results[0].locations
+        //             console.log(this.locations)
+        //         })
+        //     },
+        //     
+        //     }
+
+
+        // },
