@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from .models import UserProfile, DineOut
-
-admin.site.register(UserProfile) 
+from .models import DineOut
+ 
 admin.site.register(DineOut) 
