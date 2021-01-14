@@ -1,32 +1,46 @@
 Vue.component("user-location", {
     template: `
         <div id="user-address">
-            <input v-model="street" type="text" placeholder="street">
-            <input v-model="city" type="text" placeholder="city">
-            <input v-model="state" type="text" placeholder="state">
-            <input v-model="zipcode" type="text" placeholder="zip code">
-            <br>
-            <button @click="getLocation" type="submit">Update Address</button>
-            <div v-for="location in locations" :key=location id="address-verification">
-                <p>{{ location.formatted_address }}</p>
-                <button type="submit" @click="submitLocation(location)">This is my address</button>
+            <p>{{ address }}</p>
+            <button v-show="!show" type="submit" @click="show = !show">Update Address</button>
+            <div v-show="show">
+                <input v-model="street" type="text" placeholder="street">
+                <input v-model="city" type="text" placeholder="city">
+                <input v-model="state" type="text" placeholder="state">
+                <input v-model="zipcode" type="text" placeholder="zip code">
+                <br>
+                <button @click="getLocation" type="submit">Update Address</button>
+                <div v-for="location in locations" :key=location id="address-verification">
+                    <p>{{ location.formatted_address }}</p>
+                    <button type="submit" @click="submitLocation(location); show=!show">This is my address</button>
+                </div>
             </div>
         </div>
     `,
     data: function () {
         return {
             locations: {},
+            address: null,
             street: '',
             city: '',
             state: '',
             zipcode: '',
             csrf_token: '', 
+            show: null
         }
+    },
+    created: function () {
+        axios({
+            method: 'get',
+            url: `/api/v1/users/1/`,
+        }).then(response => {
+            this.address = response.data.address
+        })
     },
     computed: {
         userAddress: function () {
             return `${this.street}, ${this.city}, ${this.state} ${this.zipcode}`
-        }
+        },
     },
     methods: {
         getLocation: function () {
@@ -39,15 +53,12 @@ Vue.component("user-location", {
                     inputtype: "textquery",
                     fields: "formatted_address,name,geometry",
                 },
-            }).then( response => {
+            }).then(response => {
                 this.locations = response.data.candidates
-                console.log(this.locations)
             })
         },
         submitLocation: function (location) {
-            console.log(location.formatted_address) 
-            console.log(location.geometry.location.lat) 
-            console.log(location.geometry.location.lng) 
+            this.address = location.formatted_address
             axios({
                 method: "patch",
                 url: `/api/v1/users/1/`,
@@ -59,12 +70,7 @@ Vue.component("user-location", {
                     lat: location.geometry.location.lat,
                     lng: location.geometry.location.lng,
                 },
-            }).then(response => {
-                console.log(location)
-            }).catch(error => {
-                console.log(error.response.data)
-            })
-              
+            })  
         },
     },
     mounted: function() {

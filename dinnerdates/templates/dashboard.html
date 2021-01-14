@@ -2,32 +2,16 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-Hi {{ user.username }}!
-7580 N Gilbert Ave
-{% endif %}
 <div id="dashboard">
-    <user-location></user-location>
-    <template>
-        <!-- Parent container for the calendar month -->
-        <div class="calendar-month">
-
-            <!-- The calendar header -->
-            
-            <!-- Month name -->
-            <calendar-date-indicator><CalendarDateIndicator /></calendar-date-indicator>
-             
-            <!-- Pagination -->
-            <calendar-date-selector><CalendarDateSelector /></calendar-date-selector> 
-
-            <!-- Calendar grid header -->
-            <CalendarWeekdays />
-
-            <!-- Calendar grid -->
-            <ol class="days-grid">
-                <CalendarMonthDayItem />
-            </ol>
-        </div>
-    </template>
+    <get-preferences></get-preferences>
+    <get-places></get-places> 
+    <div id="location-board">
+        <user-location></user-location>
+    </div>
+    <div id="calendar-board">
+        <calendar-app></calendar-app> 
+    </div>
 </div>
+{% endif %}
 
 {% endblock %}

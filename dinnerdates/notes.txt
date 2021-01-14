@@ -1,0 +1,15 @@
+when updating preferences
+
+    1. How often do you want to dine out?
+        ##
+        wk/month/yr
+    2. Any special dates we should keep in mind? 
+        aniversery
+        birthday
+    3. How much do you want to spend?
+        $$$
+    4. What kind of food do you like?
+        categories
+    5. How high do you want to set the bar?
+        * * * * *
+    

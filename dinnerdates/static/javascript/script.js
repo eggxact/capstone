@@ -1,3 +1,3 @@
 let vm = new Vue ({
-    el: '#dashboard',
+    el: '#dashboard'
 }) 
