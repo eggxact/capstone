@@ -1,8 +1,7 @@
 when updating preferences
 
     1. How often do you want to dine out?
-        ##
-        wk/month/yr
+        ##/month
     2. Any special dates we should keep in mind? 
         aniversery
         birthday

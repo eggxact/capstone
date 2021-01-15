@@ -1,26 +1,25 @@
 Vue.component("user-location", {
     template: `
-        <div id="user-address">
-            <p>{{ address }}</p>
-            <button v-show="!show" type="submit" @click="show = !show">Update Address</button>
-            <div v-show="show">
-                <input v-model="street" type="text" placeholder="street">
-                <input v-model="city" type="text" placeholder="city">
-                <input v-model="state" type="text" placeholder="state">
-                <input v-model="zipcode" type="text" placeholder="zip code">
-                <br>
-                <button @click="getLocation" type="submit">Update Address</button>
-                <div v-for="location in locations" :key=location id="address-verification">
-                    <p>{{ location.formatted_address }}</p>
-                    <button type="submit" @click="submitLocation(location); show=!show">This is my address</button>
-                </div>
+    <div id="user-address">
+        <p>{{ currentUser.address }}</p>
+        <button v-show="!show" type="submit" @click="show = !show">Update Address</button>
+        <div v-show="show">
+            <input v-model="street" type="text" placeholder="street">
+            <input v-model="city" type="text" placeholder="city">
+            <input v-model="state" type="text" placeholder="state">
+            <input v-model="zipcode" type="text" placeholder="zip code">
+            <br>
+            <button @click="getLocation" type="submit">Update Address</button>
+            <div v-for="location in locations" :key=location.id id="address-verification">
+                <p>{{ location.formatted_address }}</p>
+                <button type="submit" @click="submitLocation(location); show=!show">This is my address</button>
             </div>
         </div>
+    </div>
     `,
     data: function () {
         return {
             locations: {},
-            address: null,
             street: '',
             city: '',
             state: '',
@@ -29,21 +28,14 @@ Vue.component("user-location", {
             show: null
         }
     },
-    created: function () {
-        axios({
-            method: 'get',
-            url: `/api/v1/users/1/`,
-        }).then(response => {
-            this.address = response.data.address
-        })
-    },
+    props: ['current-user'],
     computed: {
         userAddress: function () {
             return `${this.street}, ${this.city}, ${this.state} ${this.zipcode}`
         },
     },
     methods: {
-        getLocation: function () {
+        getLocation: function (location) {
             axios({
                 method: 'get',
                 url:  "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json",
@@ -58,10 +50,10 @@ Vue.component("user-location", {
             })
         },
         submitLocation: function (location) {
-            this.address = location.formatted_address
+            this.currentUser.address = location.formatted_address
             axios({
                 method: "patch",
-                url: `/api/v1/users/1/`,
+                url: `/api/v1/users/${this.currentUser.id}/`,
                 headers: {
                     'X-CSRFToken': this.csrf_token
                 },

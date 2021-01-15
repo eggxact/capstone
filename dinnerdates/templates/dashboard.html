@@ -3,10 +3,10 @@
 
 {% if user.is_authenticated %}
 <div id="dashboard">
-    <get-preferences></get-preferences>
-    <get-places></get-places> 
+    <get-preferences :current-user="currentUser"></get-preferences>
+    <get-places :current-user="currentUser"></get-places> 
     <div id="location-board">
-        <user-location></user-location>
+        <user-location :current-user="currentUser"></user-location>
     </div>
     <div id="calendar-board">
         <calendar-app></calendar-app> 
