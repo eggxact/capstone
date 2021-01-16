@@ -17604,74 +17604,10 @@ const categories = [
         ]
     }
 ]
-Vue.component("get-places", {
-    template: `
-    <div id="get-places">
-        <button type="submit" @click="showPlaceSearch = !showPlaceSearch">Places</button>
-        <div v-show="showPlaceSearch" id="places">
-            <button type="submit" @click="getPlaces() ; showPlaces = !showPlaces ; showButtons = !showButtons">Find Restaurants</button> 
-            <label for="sort_by">Sort by:</label>
-            <select v-model="sort_by" name="sort_by">
-                <option value="best_match">best match</option>
-                <option value="rating">rating</option>
-                <option value="review_count">review count</option>
-                <option value="distance">distance</option>
-            </select>
-            <div v-show="showButtons">
-                <button v-show="showHide" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">hide places</button>
-                <button v-show="showShow" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">show places</button>
-            </div>
-            <div v-show="showPlaces" id="places">
-                <div v-for="place in places" :key="place.index">
-                    <p>{{ place.name }} {{ place.rating }} {{ place.price }}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    `,
-    data: function () {
-        return {
-            showButtons: false,
-            showHide: true,
-            showShow: false,
-            showPlaces: false,
-            showPlaceSearch: false,
-            places: [],
-            sort_by: "best_match",
-        }
-    },
-    props: ['current-user'],
-    computed: {
-        strToInt: function () {
-            return parseInt(this.currentUser.distance * 1600) 
-        },
-    },
-    methods: {
-        getPlaces: function () {
-            axios({
-                method: 'get',
-                url: "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search",
-                headers: {
-                    Authorization: "Bearer eVtmegeYiRYnDl2BqqK31pjTCr4NjXJpS-pqNuFvobocPBHYmivDyghMjZ2xJJncuyXf4KW9iY4efs53hlGeNgCqIOSZNnZqrrDNTtQv2juo_rPjNPTczpMDGozrX3Yx",
-                },
-                params: {
-                    latitude: this.currentUser.lat,
-                    longitude: this.currentUser.lng,
-                    radius: this.strToInt,
-                    categories: this.currentUser.categories,
-                    limit: 50,
-                }
-            }).then(response => {
-                this.places = response.data.businesses
-                console.log(this.places) 
-            })
-        }
-    }
-})
 Vue.component("get-preferences", {
     template: `
     <div id="preferences">
-        <button type="submit" @click="showPreferences = !showPreferences">Preferences</button>
+        <button type="submit" @click="showPreferences = !showPreferences">Update Preferences</button>
         <div v-show="showPreferences" id="preferences">
             <button type="submit" @click="showPrice = !showPrice ; showRating = false ; showRange = false ; showCategories = false">$</button>
             <button type="submit" @click="showRating = !showRating ; showPrice = false ; showRange = false ; showCategories = false">&#9733;</button>
@@ -17732,6 +17668,14 @@ Vue.component("get-preferences", {
         categoriesToString: function () {
             return this.selectedCategories.join(",") 
         },
+        clearCategories: function () {
+            if (this.categoriesToString[0] === ',') {
+                return this.categoriesToString.replace(',', '') 
+            }
+            else {
+                return this.categoriesToString
+            }
+        }
     },
     methods: {
         submitPreferences: function () {
@@ -17745,7 +17689,7 @@ Vue.component("get-preferences", {
                     price: this.currentUser.price,
                     rating: this.currentUser.rating,
                     distance: this.currentUser.distance,
-                    categories: this.categoriesToString
+                    categories: this.clearCategories
                 },
             }).then(response => {
                 this.$parent.getCurrentUser()
@@ -17755,4 +17699,111 @@ Vue.component("get-preferences", {
     mounted: function() {
         this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
     },
+})
+Vue.component("get-places", {
+    template: `
+    <div id="get-places">
+        <button type="submit" @click="showPlaceSearch = !showPlaceSearch">Search Restaurants</button>
+        <div v-show="showPlaceSearch" id="places">
+            <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = !showPlaces ; showButtons = !showButtons">Find Restaurants</button> 
+            <label for="sort_by">Sort by:</label>
+            <select v-model="sort_by" name="sort_by">
+                <option value="best_match">best match</option>
+                <option value="rating">rating</option>
+                <option value="review_count">review count</option>
+                <option value="distance">distance</option>
+            </select>
+            <div v-show="showButtons">
+                <button v-show="showHide" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">hide places</button>
+                <button v-show="showShow" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">show places</button>
+            </div>
+            <div v-show="showPlaces" id="places">
+                <div v-for="place in userPlaces" :key="place.id">
+                    <p>{{ place.name }} {{ place.rating }} {{ place.price }}</p>
+                </div>
+                <button type="submit" @click="submitPlaces">Submit your restaurants</button>
+            </div>
+        </div>
+    </div>
+    `,
+    data: function () {
+        return {
+            showButtons: false,
+            showHide: true,
+            showShow: false,
+            showPlaces: false,
+            showPlaceSearch: false,
+            places: [],
+            userPlaces: [],
+            sort_by: "best_match",
+        }
+    },
+    props: ['current-user'],
+    computed: {
+        strToInt: function () {
+            return parseInt(this.currentUser.distance * 1600) 
+        },
+    },
+    methods: {
+        getPlaces: function () {
+            axios({
+                method: 'get',
+                url: "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search",
+                headers: {
+                    Authorization: "Bearer eVtmegeYiRYnDl2BqqK31pjTCr4NjXJpS-pqNuFvobocPBHYmivDyghMjZ2xJJncuyXf4KW9iY4efs53hlGeNgCqIOSZNnZqrrDNTtQv2juo_rPjNPTczpMDGozrX3Yx",
+                },
+                params: {
+                    latitude: this.currentUser.lat,
+                    longitude: this.currentUser.lng,
+                    radius: this.strToInt,
+                    categories: this.currentUser.categories,
+                    limit: 50,
+                    offset: 50
+                }
+            }).then(response => {
+                this.places = response.data.businesses
+                console.log(this.places) 
+                this.sortPlaces()
+            })
+        },
+        sortPlaces: function () {
+            this.userPlaces = []
+            let nums = []
+            for (let i=0; i<parseInt(this.currentUser.frequency); i++) {
+                let num = Math.floor((Math.random() * (this.places.length - 1)))
+                while (true) {
+                    if (nums.includes(num)) {
+                        num = Math.floor((Math.random() * (this.places.length - 1)))
+                    }
+                    else {
+                        nums.push(num)
+                    } 
+                    break
+                }
+            }
+            for (let i=0; i<nums.length; i++) {
+                let place = this.places[nums[i]] 
+                this.userPlaces.push(place)
+            }   
+        },
+        submitPlaces: function () {
+            for (let i=0; i<this.userPlaces.length; i++) {
+                axios({
+                    method: 'post',
+                    url: `/api/v1/restaurants/`,
+                    headers: {
+                        'X-CSRFToken': this.csrf_token
+                    },
+                    data: {
+                        user: this.currentUser.id,
+                        restaurant: this.userPlaces[i].name,
+                    },
+                })
+            }
+        }
+    },
+    mounted: function() {
+        this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+    },
+
 })

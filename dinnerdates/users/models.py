@@ -8,7 +8,7 @@ class CustomUser(AbstractUser):
     price = models.CharField(max_length=250)
     rating = models.CharField(max_length=250)
     distance = models.CharField(max_length=250)
-    categories = models.CharField(max_length=1000)
+    categories = models.CharField(max_length=1000, blank=True) 
     budget = models.CharField(max_length=250)
     frequency = models.CharField(max_length=250)
     special_dates = models.CharField(max_length=1000)

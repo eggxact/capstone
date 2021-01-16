@@ -2,8 +2,9 @@ from django.shortcuts import render
 from rest_framework import generics, viewsets, permissions
 
 from users.models import CustomUser
+from dashboard.models import DineOut
 
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, RestaurantSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     '''
@@ -18,3 +19,8 @@ class CurrentUserView(generics.RetrieveAPIView):
     queryset = CustomUser.objects.all()
     def get_object(self):
         return self.request.user
+
+class RestaurantViewSet(viewsets.ModelViewSet):
+    serializer_class = RestaurantSerializer
+    queryset = DineOut.objects.all()
+    permission_classes = [permissions.IsAuthenticated] 
