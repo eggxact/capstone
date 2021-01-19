@@ -1,7 +1,7 @@
 Vue.component("calendar-app", {
     template: `
-    <div>
-        <button @click="assignDinnerDates" type="submit">Populate Calendar</button>
+    <div id="macro-calendar">
+        <h2>January</h2>
         <div id="calendar">
             <div v-for="day in month" :key="day.index" id="calendar-day">{{ day.day }}</div>
         </div>    
@@ -29,30 +29,31 @@ Vue.component("calendar-app", {
             return parseInt(this.currentUser.frequency)
         }
     },
-    methods: {
-        assignDinnerDates: function () {
-            axios({
-                method: 'get',
-                url: `/api/v1/restaurants/${currentUser.id}/`,
-            }).then(response => {
-                this.restaurants = response.data
-            })
-            let nums = []
-            for (let i=0; i<8; i++) {
-                let num = Math.floor((Math.random() * 30))
-                while (true) {
-                    if (nums.includes(num)) {
-                        num = Math.floor((Math.random() * 30)) 
-                    }
-                    else {
-                        nums.push(num)
-                    } 
-                    break
-                }
-            }
-            for (let i=6; i<(nums.length + 6); i++) {
-                this.month[nums[i]] = this.restaurants[i] 
-            }
-        }
-    }
+    // methods: {
+    //     assignDinnerDates: function () {
+    //         axios({
+    //             method: 'get',
+    //             url: `/api/v1/restaurants/${currentUser.id}/`,
+    //         }).then(response => {
+    //             this.restaurants = response.data
+    //         })
+    //         let nums = []
+    //         for (let i=0; i<8; i++) {
+    //             let num = Math.floor((Math.random() * 30))
+    //             while (true) {
+    //                 if (nums.includes(num)) {
+    //                     num = Math.floor((Math.random() * 30)) 
+    //                 }
+    //                 else {
+    //                     nums.push(num)
+    //                 } 
+    //                 break
+    //             }
+    //         }
+    //         for (let i=6; i<(nums.length + 6); i++) {
+    //             this.month[nums[i]] = this.restaurants[i] 
+    //         }
+    //     }
+    //         <button @click="assignDinnerDates" type="submit">Populate Calendar</button>
+    // }
 })

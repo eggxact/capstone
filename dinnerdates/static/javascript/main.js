@@ -17604,61 +17604,123 @@ const categories = [
         ]
     }
 ]
-Vue.component("get-preferences", {
-    template: `
-    <div>
-        <button type="submit" @click="showPreferences = !showPreferences">Preferences</button>
-        <div v-show="showPreferences" id="preferences">
-            <div id="macro-pref-btn">
-                <button id="categories-button" class="preferences-button" type="submit" @click="showCategories = !showCategories ; showPrice = false ; showRating = false ; showRange = false ; showFrequency = false">categories</button>
-                <button class="preferences-button" type="submit" @click="showPrice = !showPrice ; showRating = false ; showRange = false ; showCategories = false ; showFrequency = false">$</button>
-                <button class="preferences-button" type="submit" @click="showRating = !showRating ; showPrice = false ; showRange = false ; showCategories = false ; showFrequency = false">&#9733;</button>
-                <button class="preferences-button" type="submit" @click="showRange = !showRange ; showPrice = false ; showRating = false ; showCategories = false ; showFrequency = false">mi.</button>
-                <button class="preferences-button" type="submit" @click="showFrequency = !showFrequency ; showPrice = false ; showRating = false ; showCategories = false ; showRange = false">#</button>
-            </div>
 
-            <div v-show="showCategories" id="category-div">
-                <div v-for="(category, index) in categoryFilter" :key="category.alias">
-                    <input :id="'category' + index" v-model="selectedCategories" type="checkbox" :value="category.alias">
-                    <label :for="'category' + index">{{ category.title }}</label> 
+Vue.component("dinnerdates", {
+    template:`
+    <div id="new-app">
+        <div id="preferences">
+            <button type="submit" @click="showPreferences = !showPreferences">Preferences</button>
+            <div v-show="showPreferences" id="preferences">
+                <button type="submit" @click="showPrice = !showPrice ; showRating = false ; showRange = false ; showCategories = false">$</button>
+                <button type="submit" @click="showRating = !showRating ; showPrice = false ; showRange = false ; showCategories = false">&#9733;</button>
+                <button type="submit" @click="showRange = !showRange ; showPrice = false ; showRating = false ; showCategories = false">mi.</button>
+                <button type="submit" @click="showCategories = !showCategories ; showPrice = false ; showRating = false ; showRange = false">categories</button>
+
+                <div v-show="showCategories" id="category-div" >
+                    <div v-for="(category, index) in categoryFilter" :key="category.alias">
+                        <input :id="'category' + index" v-model="selectedCategories" type="checkbox" :value="category.alias">
+                        <label :for="'category' + index">{{ category.title }}</label> 
+                    </div>
+                </div>
+                <div v-show="showPrice" id="price">
+                    <input v-model="currentUser.price" type="radio" name="price" value="1">$</input><br>
+                    <input v-model="currentUser.price" type="radio" name="price" value="2">$$</input><br>
+                    <input v-model="currentUser.price" type="radio" name="price" value="3">$$$</input><br>
+                    <input v-model="currentUser.price" type="radio" name="price" value="4">$$$$</input><br>
+                </div>
+                <div v-show="showRating" id="rating">
+                    <input v-model="currentUser.rating" type="radio" name="rating" value="1">&#9734;</input><br>
+                    <input v-model="currentUser.rating" type="radio" name="rating" value="2">&#9734;&#9734;</input><br>
+                    <input v-model="currentUser.rating" type="radio" name="rating" value="3">&#9734;&#9734;&#9734;</input><br>
+                    <input v-model="currentUser.rating" type="radio" name="rating" value="4">&#9734;&#9734;&#9734;&#9734;</input><br>
+                    <input v-model="currentUser.rating" type="radio" name="rating" value="5">&#9734;&#9734;&#9734;&#9734;&#9734;</input><br>
+                </div>
+                <div v-show="showRange" id="distance">
+                    <input v-model="currentUser.distance" v-on:scroll.passive="slider" type="range" min="1" max="25" value="2.5">{{ currentUser.distance }}</input>                
+                </div>
+                <br>
+                <button type="submit" @click="submitPreferences">submit changes</button>
+            </div>
+        </div>
+        <div id="user-address">
+            <button v-show="!show" type="submit" @click="show = !show">Address</button>
+            <p>{{ currentUser.address }}</p>
+            <div v-show="show">
+                <input v-model="street" type="text" placeholder="street">
+                <input v-model="city" type="text" placeholder="city">
+                <input v-model="state" type="text" placeholder="state">
+                <input v-model="zipcode" type="text" placeholder="zip code">
+                <br>
+                <button @click="getLocation" type="submit">Update Address</button>
+                <div v-for="location in locations" :key=location.id id="address-verification">
+                    <p>{{ location.formatted_address }}</p>
+                    <button type="submit" @click="submitLocation(location); show=!show">This is my address</button>
                 </div>
             </div>
-            <div v-show="showPrice" id="price">
-                <input v-model="currentUser.price" type="radio" name="price" value="1"> $</input><br>
-                <input v-model="currentUser.price" type="radio" name="price" value="2"> $$</input><br>
-                <input v-model="currentUser.price" type="radio" name="price" value="3"> $$$</input><br>
-                <input v-model="currentUser.price" type="radio" name="price" value="4"> $$$$</input><br>
+        </div>
+        <div id="get-places">
+            <button type="submit" @click="showPlaceSearch = !showPlaceSearch">Restaurants</button>
+            <div v-show="showPlaceSearch" id="places">
+                <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = !showPlaces ; showButtons = !showButtons">Find Restaurants</button> 
+                <label for="sort_by">Sort by:</label>
+                <select v-model="sort_by" name="sort_by">
+                    <option value="best_match">best match</option>
+                    <option value="rating">rating</option>
+                    <option value="review_count">review count</option>
+                    <option value="distance">distance</option>
+                </select>
+                <div v-show="showButtons">
+                    <button v-show="showHide" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">hide places</button>
+                    <button v-show="showShow" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">show places</button>
+                </div>
+                <div v-show="showPlaces" id="places">
+                    <div v-for="place in userPlaces" :key="place.id">
+                        <p>{{ place.name }} {{ place.rating }} {{ place.price }}</p>
+                    </div>
+                    <button type="submit" @click="submitPlaces">Submit your restaurants</button>
+                </div>
             </div>
-            <div v-show="showRating" id="rating">
-                <input v-model="currentUser.rating" type="radio" name="rating" value="1">&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="2">&#9734;&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="3">&#9734;&#9734;&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="4">&#9734;&#9734;&#9734;&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="5">&#9734;&#9734;&#9734;&#9734;&#9734;</input><br>
-            </div>
-            <div v-show="showRange" id="distance">
-                <input v-model="currentUser.distance" v-on:scroll.passive="slider" type="range" min="1" max="25" value="2.5">      {{ currentUser.distance }}</input>                
-            </div>
-            <div v-show="showFrequency" id="frequency">
-                <input type="text" placeholder="dineout frequency" v-model="currentUser.frequency">frequency</input>
-            </div>
-            <br>
-            <div id="submit-btn">
-                <button id="submit-changes-button" type="submit" @click="submitPreferences">submit changes</button>
-            </dvi>
+        </div>
+        <div>
+            <div id="calendar">
+                <div v-for="day in month" :key="day.index" id="calendar-day">{{ day.day }}</div>
+            </div>    
         </div>
     </div>
     `,
     data: function () {
         return {
-            showPreferences: false,
-            showPrice: false,
-            showRating: false,
-            showRange: false,
-            showCategories: false,
-            showFrequency: false,
+            locations: {},
+            street: '',
+            city: '',
+            state: '',
+            zipcode: '',
             categories: categories,
             selectedCategories: [],
+            places: [],
+            userPlaces: [],
+            sort_by: "best_match",
+            restaurants: [],
+            show: null,
+            showButtons: false,
+            showCategories: false,
+            showHide: true,
+            showPlaces: false,
+            showPlaceSearch: false,
+            showPreferences: false,
+            showPrice: false,
+            showRange: false,
+            showRating: false,
+            showShow: false,
+            csrf_token: '', 
+            month: [
+                {day: 27}, {day: 28}, {day: 29}, {day: 30}, {day: 31}, {day: 1}, {day: 2}, 
+                {day: 3}, {day: 4}, {day: 5}, {day: 6}, {day: 7}, {day: 8}, {day: 9},
+                {day: 10}, {day: 11}, {day: 12}, {day: 13}, {day: 14}, {day: 15}, {day: 16},
+                {day: 17}, {day: 18}, {day: 19}, {day: 20}, {day: 21}, {day: 22}, {day: 23},
+                {day: 24}, {day: 25}, {day: 26}, {day: 27}, {day: 28}, {day: 29}, {day: 30},
+                {day: 31}, {day: 1}, {day: 2}, {day: 3}, {day: 4}, {day: 5}, {day: 6}
+            ],
         }
     },
     props: ['current-user'],
@@ -17684,7 +17746,17 @@ Vue.component("get-preferences", {
             else {
                 return this.categoriesToString
             }
-        }
+        },
+        userAddress: function () {
+            return `${this.street}, ${this.city}, ${this.state} ${this.zipcode}`
+        },
+        stringToInt: function () {
+            return parseInt(this.currentUser.frequency)
+        },
+        strToInt: function () {
+            return parseInt(this.currentUser.distance * 1600) 
+        },
+
     },
     methods: {
         submitPreferences: function () {
@@ -17698,67 +17770,41 @@ Vue.component("get-preferences", {
                     price: this.currentUser.price,
                     rating: this.currentUser.rating,
                     distance: this.currentUser.distance,
-                    categories: this.clearCategories,
-                    frequency: this.currentUser.frequency
+                    categories: this.clearCategories
                 },
             }).then(response => {
                 this.$parent.getCurrentUser()
             })  
         },
-    },
-    mounted: function() {
-        this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value
-    },
-})
-Vue.component("get-places", {
-    template: `
-    <div id="get-places">
-        <button type="submit" @click="showPlaceSearch = !showPlaceSearch">Restaurants</button>
-        <div v-show="showPlaceSearch" id="places">
-            <div id="search-rest-btn">
-                <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = !showPlaces ; showButtons = !showButtons">Search</button> 
-                <div>
-                    <label for="sort_by">Sort by:</label>
-                    <select v-model="sort_by" name="sort_by">
-                        <option value="best_match">best match</option>
-                        <option value="rating">rating</option>
-                        <option value="review_count">review count</option>
-                        <option value="distance">distance</option>
-                    </select>
-                </div>
-            </div>
-            <div v-show="showButtons">
-                <button v-show="showHide" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">hide places</button>
-                <button v-show="showShow" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">show places</button>
-            </div>
-            <div v-show="showPlaces" id="places">
-                <div v-for="place in userPlaces" :key="place.id">
-                    <p>{{ place.name }} {{ place.rating }} {{ place.price }}</p>
-                </div>
-                <button type="submit" @click="submitPlaces">Submit your restaurants</button>
-            </div>
-        </div>
-    </div>
-    `,
-    data: function () {
-        return {
-            showButtons: false,
-            showHide: true,
-            showShow: false,
-            showPlaces: false,
-            showPlaceSearch: false,
-            places: [],
-            userPlaces: [],
-            sort_by: "best_match",
-        }
-    },
-    props: ['current-user'],
-    computed: {
-        strToInt: function () {
-            return parseInt(this.currentUser.distance * 1600) 
+        getLocation: function (location) {
+            axios({
+                method: 'get',
+                url:  "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json",
+                params: {
+                    key: "AIzaSyAub8T3ipcLfuHDpGFzrl4Kt84OClHBEoU",
+                    input: this.userAddress, 
+                    inputtype: "textquery",
+                    fields: "formatted_address,name,geometry",
+                },
+            }).then(response => {
+                this.locations = response.data.candidates
+            })
         },
-    },
-    methods: {
+        submitLocation: function (location) {
+            this.currentUser.address = location.formatted_address
+            axios({
+                method: "patch",
+                url: `/api/v1/users/${this.currentUser.id}/`,
+                headers: {
+                    'X-CSRFToken': this.csrf_token
+                },
+                data: {
+                    address: location.formatted_address,
+                    lat: location.geometry.location.lat,
+                    lng: location.geometry.location.lng,
+                },
+            })  
+        },
         getPlaces: function () {
             axios({
                 method: 'get',

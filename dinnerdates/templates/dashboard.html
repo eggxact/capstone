@@ -3,10 +3,14 @@
 
 {% if user.is_authenticated %}
 <div id="dashboard">
-    <get-preferences :current-user="currentUser"></get-preferences>
-    <get-places :current-user="currentUser"></get-places> 
-    <div id="location-board">
-        <user-location :current-user="currentUser"></user-location>
+    <div id="macro-btn">
+        <div id="buttons">
+            <div id="location-board">
+                <user-location :current-user="currentUser"></user-location>
+            </div>
+            <get-preferences id="macro-preferences" :current-user="currentUser"></get-preferences>
+            <get-places :current-user="currentUser"></get-places> 
+        </div>
     </div>
     <div id="calendar-board">
         <calendar-app></calendar-app> 
@@ -15,3 +19,7 @@
 {% endif %}
 
 {% endblock %}
+
+
+<!--    
+-->

@@ -1,46 +1,210 @@
 html {
     box-sizing: border-box;
+    height: 100%;
 }
 *, *:before, *:after {
     box-sizing: inherit;
 }
+body {
+    max-width: 100%;
+    background-color: #D93B58;
+    height: 100%;
+    margin: 0;
+}
+#content {
+    background-color:#4B8CA6;
+    height: 100%;
+}
 header {
+    color: #F1FAEE;
+}
+header h2 {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    margin: 0px;  
+    padding-bottom: 0px;   
+    font-family: 'Norican', cursive;
+    font-weight: lighter;
+    font-size: 40pt;
+    line-height: 1;
+    /* letter-spacing: 10px; */
+}
+header div p {
+    margin: 0;
 }
 #login-logout {
+    margin-top: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-end;
 }
 #login-logout p {
     padding-right: 25px;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 16pt;
+}
+#dashboard {
+    /* display: grid; */
+    /* grid-template-columns: 40% 60%; */
+}
+#buttons {
+    max-width: 300px;
+    margin-top: 50px;
+    margin-left: 25px;
+    margin-right: 25px;
+    padding-left: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    /* display: grid; */
+    /* grid-template-rows: auto; */
+    border-radius: 10px;
+    background-color: #F1FAEE; 
+    border: 2px solid #F1FAEE;
+    /* justify-items: flex-start; */
+}
+button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* background-color:  ; */
+    border: 1px solid #F1FAEE;
+    line-height: 25pt;
+    width: fit-content;
+    border-radius: 10px;
+    /* box-shadow: 2px 2px 2px darkgray; */
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 16pt;
+    color:  #D93B58;
+    /* letter-spacing: 3px; */
+}
+#address-update-button {
+    display: flex;
+    justify-content: flex-end;
 }
 #location-board {
+    margin: 0;
+    padding: 0;
+}
+#address-submit {
+    display: flex;
+    justify-content: flex-end;
+}
+#address-submit button {
+    margin-right: 5px;
+}
+#macro-preferences {
+    /* width: 100%; */
+}
+#preferences {
     display: grid;
-    justify-items: right;
+    grid-template-rows: auto;
+    justify-items: center;
+}
+#macro-pref-btn {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 5%;
+    width: 100%;
+}
+#macro-pref-btn button {
+    margin-left: 5px;
+    text-align: justify;
+    align-content: center;
+}
+#submit-btn {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+#category-div label {
+    font-family: 'Josefin Sans', sans-serif;
+    color: #D93B58;
+    margin-left: 10px;
+}
+#category-div input {
+    border: none;
+    margin-left: 10px;
+}
+#price, #rating, #category-div {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #F1FAEE;
+    border: none;
+    border-radius: 10px;
+    color: #D93B58;
+    min-width: 75%;
+}
+#price input, #rating input {
+    margin-left: 10px;
+    letter-spacing: 5px;
+}
+#distance {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #F1FAEE;
+    border: none;
+    border-radius: 10px;
+    color: #D93B58;
+    min-width: 75%;
+}
+#distance input {
+    margin-left: 10px;
+}
+#search-rest-btn {
+    display: grid;
+    grid-template-rows: auto;
+}
+#macro-calendar {
+    max-width: fit-content;
+    background-color: #F1FAEE;
+    border: 1px solid #F1FAEE;
+    border-radius: 10px;
+    padding: 10px;
 }
 #calendar-board {
     margin-top: 50px;
+    margin-right: 0;
     display: grid;
     justify-items: center;
+    border-radius: 10px;
 }
 #calendar {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
     width: fit-content;
     height: fit-content;
-    border: .25px solid black;
+    border-radius: 10px;
 }
 #calendar-day {
-    width: 75px;
-    height: 75px;
-    border: .25px solid black;
+    max-width: auto;
+    max-height: auto;
+    /* width: 75px; */
+    /* height: 75px; */
+    border: .25px solid #D93B58;
     margin: 0;
     padding-left: 5px;
     padding-top: 5px;
+    border-radius: 10px;
+    /* margin: 2.5px; */
 }
 #category-div {
     max-width: 200px;
     max-height: 200px;
     overflow: auto;
+}
+.address-input {
+    border: none;
+    border-radius: 10px;
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    width: 85%;
+    padding-left: 10px;
+    font-size: 12pt;line-height: 1.5;
+    margin-bottom: 5px;
+}
+p {
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 14pt;
 }

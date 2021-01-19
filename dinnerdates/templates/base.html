@@ -6,35 +6,37 @@
     <title>DinnerDates</title> 
     <link rel="stylesheet" href="{% static 'css/main.css'%}">
     <link rel="normalize" href="https://necolas.github.io/normalize.css/latest/normalize.css">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <script src="https://unpkg.com/vue"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Yanone+Kaffeesatz:wght@200;400&display=swap" rel="stylesheet">    <script src="https://unpkg.com/vue"></script>
 </head> 
 <body>
     {% csrf_token %}
-    <header>
-        <h2>DinnerDates</h2>
-        <div id="login-logout">
-            {% if user.is_authenticated %}
-                <p>Hi {{ user.username }}!</p>
-                <p><a href="{% url 'logout' %}">Log Out</a></p>
-            {% else %}
-                <a href="{% url 'login' %}">Log In</a>
-                <a href="{% url 'users:signup' %}">Sign Up</a>
-            {% endif %}
+    <div id="content">
+        <header>
+            <div id="login-logout">
+                {% if user.is_authenticated %}
+                    <p>Hi {{ user.username }}!</p>
+                    <p><a href="{% url 'logout' %}">Log Out</a></p>
+                {% else %}
+                    <a href="{% url 'login' %}">Log In</a>
+                    <a href="{% url 'users:signup' %}">Sign Up</a>
+                {% endif %}
+            </div>
+            <h2>DinnerDates</h2>
+        </header>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+        <div class="scripts">
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+            <script src="https://unpkg.com/vue"></script>
+            <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+            <script src="{% static 'javascript/calendar.js'%}"></script>
+            <script src="{% static 'javascript/getplaces.js'%}"></script>
+            <script src="{% static 'javascript/location.js'%}"></script>
+            <script src="{% static 'javascript/script.js'%}"></script>
         </div>
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
-    <div class="scripts">
-        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-        <script src="https://unpkg.com/vue"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="{% static 'javascript/calendar.js'%}"></script>
-        <script src="{% static 'javascript/getplaces.js'%}"></script>
-        <script src="{% static 'javascript/location.js'%}"></script>
-        <script src="{% static 'javascript/script.js'%}"></script>
     </div>
 </body>
 </html>

@@ -1,18 +1,26 @@
 Vue.component("user-location", {
     template: `
     <div id="user-address">
-        <p>{{ currentUser.address }}</p>
-        <button v-show="!show" type="submit" @click="show = !show">Update Address</button>
-        <div v-show="show">
-            <input v-model="street" type="text" placeholder="street">
-            <input v-model="city" type="text" placeholder="city">
-            <input v-model="state" type="text" placeholder="state">
-            <input v-model="zipcode" type="text" placeholder="zip code">
-            <br>
-            <button @click="getLocation" type="submit">Update Address</button>
-            <div v-for="location in locations" :key=location.id id="address-verification">
-                <p>{{ location.formatted_address }}</p>
-                <button type="submit" @click="submitLocation(location); show=!show">This is my address</button>
+        <button type="submit" @click="showAddress = !showAddress ; showUpdate = true">Address</button>
+        <div v-show="showAddress">
+            <p>{{ currentUser.address }}</p>
+            <div id="address-update-button" >
+                <button v-show="showUpdate" type="submit" @click="show = !show ; showUpdate = !showUpdate">Update</button>
+            </div>
+            <div v-show="show">
+                <input class="address-input" v-model="street" type="text" placeholder="street"><br>
+                <input class="address-input" v-model="city" type="text" placeholder="city"><br>
+                <input class="address-input" v-model="state" type="text" placeholder="state"><br>
+                <input class="address-input" v-model="zipcode" type="text" placeholder="zip code">
+                <br>
+                <div id="address-submit">
+                    <button @click="getLocation" type="submit">Update Address</button>
+                    <button @click="show = !show ; showUpdate = true " type="submit">Cancel</button>
+                </div>
+                <div v-for="location in locations" :key=location.id id="address-verification">
+                    <p>{{ location.formatted_address }}</p>
+                    <button type="submit" @click="submitLocation(location); show=!show">This is my address</button>
+                </div>
             </div>
         </div>
     </div>
@@ -25,7 +33,10 @@ Vue.component("user-location", {
             state: '',
             zipcode: '',
             csrf_token: '', 
-            show: null
+            show: null,
+            showAddress: null,
+            showCancel: null,
+            showUpdate: null,
         }
     },
     props: ['current-user'],
@@ -62,7 +73,9 @@ Vue.component("user-location", {
                     lat: location.geometry.location.lat,
                     lng: location.geometry.location.lng,
                 },
-            })  
+            }).then(response => {
+                console.log(this.currentUser.address)
+            }) 
         },
     },
     mounted: function() {
