@@ -18,16 +18,12 @@
                     <p>Hi {{ user.username }}!</p>
                     <p><a href="{% url 'logout' %}">Log Out</a></p>
                 {% else %}
-                    <a href="{% url 'login' %}">Log In</a>
-                    <a href="{% url 'users:signup' %}">Sign Up</a>
+                    <p><a href="{% url 'login' %}">Log In</a></p>
+                    <p><a href="{% url 'users:signup' %}">Sign Up</a></p>
                 {% endif %}
             </div>
-            <h2>DinnerDates</h2>
         </header>
-        <main>
-            {% block content %}
-            {% endblock %}
-        </main>
+        <div id="main-div"><main>{% block content %}{% endblock %}</main></div>
         <div class="scripts">
             <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
             <script src="https://unpkg.com/vue"></script>

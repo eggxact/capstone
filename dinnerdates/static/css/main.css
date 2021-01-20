@@ -8,17 +8,59 @@ html {
 body {
     max-width: 100%;
     background-color: #D93B58;
-    height: 100%;
+    height: fit-content;
     margin: 0;
+}
+#main-div {
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 #content {
     background-color:#4B8CA6;
     height: 100%;
 }
-header {
-    color: #F1FAEE;
+#landing-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin-top: 10%; */
+    /* background-color:  #D93B58; */
+    /* border-radius: 50%; */
+    /* width: 500px; */
+    /* height: 500px; */
+    height: 100%;
+    margin-bottom: 100px;
+
 }
-header h2 {
+#welcome-note {
+    display: flex;
+    justify-content: center;
+    /* flex-wrap: wrap; */
+    align-items: center;
+    background-color:  #D93B58;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+}
+#first-line, #second-line {
+    color: #F1FAEE;
+    font-family: 'Norican', cursive;
+    font-size: 25pt;
+    letter-spacing: 8px;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+}
+#header {
+    color: #F1FAEE;
+    font-family: 'Norican', cursive;
+    font-size: 40pt;
+    display: flex;
+    justify-content: center;
+}
+#header-h2 {
+    color: #F1FAEE;
     display: flex;
     justify-content: center;
     margin: 0px;  
@@ -34,7 +76,7 @@ header div p {
 }
 #login-logout {
     margin-top: 0;
-    padding-top: 5px;
+    padding-top: 20px;
     padding-bottom: 5px;
     display: flex;
     justify-content: flex-end;
@@ -44,24 +86,34 @@ header div p {
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-size: 16pt;
 }
+.login {
+    margin-bottom: 100px;
+}
 #dashboard {
-    /* display: grid; */
-    /* grid-template-columns: 40% 60%; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#macro-btn {
+    width: 100%;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 #buttons {
-    max-width: 300px;
+    width: 100%;
+    /* max-width: 300px; */
     margin-top: 50px;
-    margin-left: 25px;
-    margin-right: 25px;
-    padding-left: 5px;
+    /* margin-left: 25px; */
+    /* margin-right: 25px; */
+    /* padding-left: 5px; */
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
     /* display: grid; */
     /* grid-template-rows: auto; */
     border-radius: 10px;
-    background-color: #F1FAEE; 
-    border: 2px solid #F1FAEE;
+    background-color: none; 
+    /* border: 2px solid #F1FAEE; */
     /* justify-items: flex-start; */
 }
 button {
@@ -158,15 +210,18 @@ button {
     grid-template-rows: auto;
 }
 #macro-calendar {
-    max-width: fit-content;
-    background-color: #F1FAEE;
-    border: 1px solid #F1FAEE;
-    border-radius: 10px;
-    padding: 10px;
+    /* width: 100%; */
+    background-color: none;
+    /* border: 1px solid #F1FAEE; */
+    /* border-radius: 10px; */
+    /* padding: 10px; */
 }
 #calendar-board {
-    margin-top: 50px;
-    margin-right: 0;
+    /* width: 100%; */
+    /* height: fit-content; */
+    /* margin-top: 50px; */
+    /* margin-left: 15px; */
+    /* margin-right: 15px; */
     display: grid;
     justify-items: center;
     border-radius: 10px;
@@ -174,21 +229,25 @@ button {
 #calendar {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
-    width: fit-content;
-    height: fit-content;
+    /* width: 100%; */
+    /* height: 100%; */
     border-radius: 10px;
 }
 #calendar-day {
-    max-width: auto;
-    max-height: auto;
-    /* width: 75px; */
-    /* height: 75px; */
-    border: .25px solid #D93B58;
-    margin: 0;
+    height: 100px;
+    width: 100px;
+    background-color: #F1FAEE;
+    border: 2px solid #D93B58;
+    margin: 5px;
     padding-left: 5px;
     padding-top: 5px;
-    border-radius: 10px;
-    /* margin: 2.5px; */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24pt;
+    font-family: 'Josefin Sans', sans-serif;
+
 }
 #category-div {
     max-width: 200px;
@@ -208,3 +267,7 @@ p {
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-size: 14pt;
 }
+/* @media (min-width: 700px) {
+    #dashboard {
+        width: 75%;
+} */

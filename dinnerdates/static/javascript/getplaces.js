@@ -17637,7 +17637,7 @@ Vue.component("get-preferences", {
                 <input v-model="currentUser.rating" type="radio" name="rating" value="5">&#9734;&#9734;&#9734;&#9734;&#9734;</input><br>
             </div>
             <div v-show="showRange" id="distance">
-                <input v-model="currentUser.distance" v-on:scroll.passive="slider" type="range" min="1" max="25" value="2.5">      {{ currentUser.distance }}</input>                
+                <input v-model="currentUser.distance" v-on:scroll.passive="slider" type="range" min="1" max="25" value="2.5">  {{ currentUser.distance }}</input>                
             </div>
             <div v-show="showFrequency" id="frequency">
                 <input type="text" placeholder="dineout frequency" v-model="currentUser.frequency">frequency</input>
@@ -17645,7 +17645,7 @@ Vue.component("get-preferences", {
             <br>
             <div id="submit-btn">
                 <button id="submit-changes-button" type="submit" @click="submitPreferences">submit changes</button>
-            </dvi>
+            </div>
         </div>
     </div>
     `,
@@ -17801,6 +17801,7 @@ Vue.component("get-places", {
             }   
         },
         submitPlaces: function () {
+            console.log(this.userPlaces)
             for (let i=0; i<this.userPlaces.length; i++) {
                 axios({
                     method: 'post',
@@ -17811,8 +17812,9 @@ Vue.component("get-places", {
                     data: {
                         user: this.currentUser.id,
                         restaurant: this.userPlaces[i].name,
+                        restaurant_id: this.userPlaces[i].id
                     },
-                })
+                }) 
             }
         }
     },

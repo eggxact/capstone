@@ -2,8 +2,11 @@ Vue.component("calendar-app", {
     template: `
     <div id="macro-calendar">
         <h2>January</h2>
+        <button type="submit" @click="getRestaurants">Schedule dinner</button>
         <div id="calendar">
-            <div v-for="day in month" :key="day.index" id="calendar-day">{{ day.day }}</div>
+            <div v-for="day in month" :key="day.index" id="calendar-day">
+                {{ day.day }}
+            </div>
         </div>    
     </div>
     `,
@@ -18,42 +21,54 @@ Vue.component("calendar-app", {
             {day: 31}, {day: 1}, {day: 2}, {day: 3}, {day: 4}, {day: 5}, {day: 6}
             ],
             restaurants: [],
+            dinnerSchedule: {},
         }
     },
     props: ['current-user'],
-    // created: function () {
-    //         return this.month
-    // },
     computed: {
-        stringToInt: function () {
-            return parseInt(this.currentUser.frequency)
-        }
+        // postToCalendar: function () {
+        //     for (let i=0; i<this.month.length; i++) {
+        //         if ()
+        //     }
+        // }
     },
-    // methods: {
-    //     assignDinnerDates: function () {
-    //         axios({
-    //             method: 'get',
-    //             url: `/api/v1/restaurants/${currentUser.id}/`,
-    //         }).then(response => {
-    //             this.restaurants = response.data
-    //         })
-    //         let nums = []
-    //         for (let i=0; i<8; i++) {
-    //             let num = Math.floor((Math.random() * 30))
-    //             while (true) {
-    //                 if (nums.includes(num)) {
-    //                     num = Math.floor((Math.random() * 30)) 
-    //                 }
-    //                 else {
-    //                     nums.push(num)
-    //                 } 
-    //                 break
-    //             }
-    //         }
-    //         for (let i=6; i<(nums.length + 6); i++) {
-    //             this.month[nums[i]] = this.restaurants[i] 
-    //         }
-    //     }
-    //         <button @click="assignDinnerDates" type="submit">Populate Calendar</button>
-    // }
+    methods: {
+        getRestaurants: function () {
+            axios({
+                method: 'get',
+                url: `/api/v1/restaurants/`,
+            }).then(response => {
+                // console.log(response)
+                this.restaurants = [] 
+                for (let i=0; i<response.data.length; i++) {
+                    if (response.data[i].user === this.currentUser.id) {
+                        this.restaurants.push(response.data[i]) 
+                    }
+                }
+                // console.log(this.restaurants, 'this is restaurants',)
+                this.postRestaurants()
+            })
+        },
+        postRestaurants: function () {
+            this.dinnerSchedule = {}
+            let nums = []
+            for (let i=0; i<parseInt(this.currentUser.frequency); i++) {
+                let num = Math.floor((Math.random() * 30))
+                while (true) {
+                    if (nums.includes(num)) {
+                        num = Math.floor((Math.random() * 30))
+                    }
+                    else {
+                        nums.push(num)
+                    } 
+                    break
+                }
+            }
+            for (let i=0; i<this.currentUser.frequency; i++) {
+                console.log(i, nums[i], this.restaurants[nums[i]])
+                this.dinnerSchedule[i] = this.restaurants[nums[i]]
+            }
+            console.log(this.dinnerSchedule) 
+        }
+    }
 })
