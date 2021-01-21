@@ -17607,16 +17607,19 @@ const categories = [
 Vue.component("get-preferences", {
     template: `
     <div>
-        <button type="submit" @click="showPreferences = !showPreferences">Preferences</button>
+        <div id="center-button">
+            <button class="user-btn" type="submit" @click="showPreferences = !showPreferences">Preferences</button>
+        </div>
         <div v-show="showPreferences" id="preferences">
             <div id="macro-pref-btn">
                 <button id="categories-button" class="preferences-button" type="submit" @click="showCategories = !showCategories ; showPrice = false ; showRating = false ; showRange = false ; showFrequency = false">categories</button>
-                <button class="preferences-button" type="submit" @click="showPrice = !showPrice ; showRating = false ; showRange = false ; showCategories = false ; showFrequency = false">$</button>
-                <button class="preferences-button" type="submit" @click="showRating = !showRating ; showPrice = false ; showRange = false ; showCategories = false ; showFrequency = false">&#9733;</button>
-                <button class="preferences-button" type="submit" @click="showRange = !showRange ; showPrice = false ; showRating = false ; showCategories = false ; showFrequency = false">mi.</button>
-                <button class="preferences-button" type="submit" @click="showFrequency = !showFrequency ; showPrice = false ; showRating = false ; showCategories = false ; showRange = false">#</button>
+                <div id="wrap-btns">
+                    <button class="preferences-button" type="submit" @click="showPrice = !showPrice ; showRating = false ; showRange = false ; showCategories = false ; showFrequency = false">$</button>
+                    <button class="preferences-button" type="submit" @click="showRating = !showRating ; showPrice = false ; showRange = false ; showCategories = false ; showFrequency = false">&#9733;</button>
+                    <button class="preferences-button" type="submit" @click="showRange = !showRange ; showPrice = false ; showRating = false ; showCategories = false ; showFrequency = false">mi.</button>
+                    <button class="preferences-button" type="submit" @click="showFrequency = !showFrequency ; showPrice = false ; showRating = false ; showCategories = false ; showRange = false">#</button>
+                </div>
             </div>
-
             <div v-show="showCategories" id="category-div">
                 <div v-for="(category, index) in categoryFilter" :key="category.alias">
                     <input :id="'category' + index" v-model="selectedCategories" type="checkbox" :value="category.alias">
@@ -17713,7 +17716,9 @@ Vue.component("get-preferences", {
 Vue.component("get-places", {
     template: `
     <div id="get-places">
-        <button type="submit" @click="showPlaceSearch = !showPlaceSearch">Restaurants</button>
+        <div id="restaurant-btn">
+            <button class="user-btn" type="submit" @click="showPlaceSearch = !showPlaceSearch">Restaurants</button>
+        </div>
         <div v-show="showPlaceSearch" id="places">
             <div id="search-rest-btn">
                 <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = !showPlaces ; showButtons = !showButtons">Search</button> 
@@ -17748,6 +17753,7 @@ Vue.component("get-places", {
             showPlaces: false,
             showPlaceSearch: false,
             places: [],
+            restData: [],
             userPlaces: [],
             sort_by: "best_match",
         }
@@ -17801,22 +17807,52 @@ Vue.component("get-places", {
             }   
         },
         submitPlaces: function () {
-            console.log(this.userPlaces)
+            this.restData = []
+            console.log(this.userPlaces, 'userPlaces')
             for (let i=0; i<this.userPlaces.length; i++) {
                 axios({
-                    method: 'post',
-                    url: `/api/v1/restaurants/`,
+                    method: 'get',
+                    url: `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${this.userPlaces[i].id}`,
                     headers: {
-                        'X-CSRFToken': this.csrf_token
+                        Authorization: "Bearer eVtmegeYiRYnDl2BqqK31pjTCr4NjXJpS-pqNuFvobocPBHYmivDyghMjZ2xJJncuyXf4KW9iY4efs53hlGeNgCqIOSZNnZqrrDNTtQv2juo_rPjNPTczpMDGozrX3Yx",
                     },
-                    data: {
-                        user: this.currentUser.id,
-                        restaurant: this.userPlaces[i].name,
-                        restaurant_id: this.userPlaces[i].id
-                    },
-                }) 
+                }).then(response => {
+                    axios({
+                        method: 'post',
+                        url: `/api/v1/restaurants/`,
+                        headers: {
+                            'X-CSRFToken': this.csrf_token
+                        },
+                        data: {
+                            user: this.currentUser.id,
+                            restaurant: this.userPlaces[i].name,
+                            restaurant_id: this.userPlaces[i].id,
+                            image_url: response.data.image_url,
+                            restaurant_url: response.data.url
+                        },
+                    }) 
+                })
             }
-        }
+        },
+        // submitForReal: function () {
+        //     console.log(this.restData)
+        //     for (let i=0; i<this.userPlaces.length; i++) {
+        //         axios({
+        //             method: 'post',
+        //             url: `/api/v1/restaurants/`,
+        //             headers: {
+        //                 'X-CSRFToken': this.csrf_token
+        //             },
+        //             data: {
+        //                 user: this.currentUser.id,
+        //                 restaurant: this.userPlaces[i].name,
+        //                 restaurant_id: this.userPlaces[i].id,
+        //                 image_url: this.restData.i.image_url,
+        //                 restaurant_url: this.restData.i.url
+        //             },
+        //         }) 
+        //     }
+        // }
     },
     mounted: function() {
         this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value

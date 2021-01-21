@@ -5,6 +5,8 @@ class DineOut(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     restaurant = models.CharField(max_length=250)
     restaurant_id = models.CharField(max_length=1000)
+    image_url = models.CharField(max_length=2000)
+    restaurant_url = models.CharField(max_length=2000)
     date = models.DateField(null=True, blank=True)
     rating = models.BooleanField(default=True)
     

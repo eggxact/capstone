@@ -13,7 +13,6 @@ let vm = new Vue ({
                 url: '/api/v1/currentuser/',
             }).then(response => {
                 this.currentUser = response.data
-                console.log(this.currentUser, 'line 16 of script.js')
             })
         }
     }

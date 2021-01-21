@@ -1,7 +1,7 @@
 Vue.component("user-location", {
     template: `
     <div id="user-address">
-        <button type="submit" @click="showAddress = !showAddress ; showUpdate = true">Address</button>
+        <button class="user-btn" type="submit" @click="showAddress = !showAddress ; showUpdate = true">Address</button>
         <div v-show="showAddress">
             <p>{{ currentUser.address }}</p>
             <div id="address-update-button" >

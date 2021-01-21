@@ -10,4 +10,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class RestaurantSerializer(serializers.ModelSerializer):
         class Meta: 
             model = DineOut     
-            fields = ['user', 'restaurant', 'date', 'rating', 'restaurant_id']   
+            fields = ['user', 'restaurant', 'date', 'rating', 'restaurant_id', 'image_url', 'restaurant_url']   
