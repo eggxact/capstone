@@ -2,14 +2,14 @@ Vue.component("get-places", {
     template: `
     <div id="get-places">
         <div id="restaurant-btn">
-            <button class="user-btn" type="submit" @click="showPlaceSearch = !showPlaceSearch">Restaurants</button>
+            <button class="user-btn" type="submit" @click="showPlaceSearch = !showPlaceSearch">restaurants</button>
         </div>
         <div v-show="showPlaceSearch" id="places">
             <div id="search-rest-btn">
-                <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = true ; showButtons = true ; showHide = true ; showShow = false">Search</button> 
+                <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = true ; showButtons = true ; showHide = true ; showShow = false">search</button> 
                 <div>
-                    <label for="sort_by">Sort by:</label>
-                    <select v-model="sort_by" name="sort_by">
+                    <label for="sort_by">by:</label>
+                    <select id="restaurant-sort" v-model="sort_by" name="sort_by">
                         <option value="best_match">best match</option>
                         <option value="rating">rating</option>
                         <option value="review_count">review count</option>
@@ -17,16 +17,19 @@ Vue.component("get-places", {
                     </select>
                 </div>
             </div>
-            <div v-show="showButtons">
+            <div id="hide-places-parent" v-show="showButtons">
                 <button v-show="showHide" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">hide places</button>
                 <button v-show="showShow" @click="showPlaces = !showPlaces ; showShow = !showShow ; showHide = !showHide" type="submit" id="hide-places">show places</button>
             </div>
             <div v-show="showPlaces" id="places">
-                <div v-for="place in userPlaces" :key="place.id">
-                    <a target="_blank" :href=" place.url "><p>{{ place.name }}</p></a>
-                    <p>{{ place.rating }} {{ place.price }}</p>
+                <div id="unique-place" v-for="place in userPlaces" :key="place.id">
+                    <a target="_blank" :href=" place.url ">{{ place.name }}
+                    <div class="rating-price">
+                        <p>{{ place.rating }}</p><p>{{ place.price }}</p>
+                    </div>
+                    </a>
                 </div>
-                <button type="submit" @click="submitPlaces">Submit your restaurants</button>
+                <button type="submit" @click="submitPlaces">submit your restaurants</button>
             </div>
         </div>
     </div>

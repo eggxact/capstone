@@ -29,6 +29,10 @@ body {
 #second-line a, #login-logout p a, #restaurant-name a  {
     color: #F1FAEE;
 }
+#login-logout {
+    display: flex;
+    justify-content: space-between;
+}
 #login-logout p a:hover, #restaurant-name a:hover {
     color:  #D93B58;
 }
@@ -41,6 +45,7 @@ body {
 }
 .logout-img {
     margin-left: 5px;
+    margin-right: 5px;
 }
 #second-line a:hover {
     color: #4B8CA6;
@@ -80,11 +85,12 @@ body {
     justify-content: center;
 }
 #header-h2 {
+    width: 100%;
     color: #F1FAEE;
     text-shadow: 1px 1px 2px #D93B58;
     display: flex;
     justify-content: center;
-    margin: 0px;  
+    /* margin: 0px 150px 0 150px;   */
     padding-bottom: 0px;   
     font-family: 'Norican', cursive;
     font-weight: lighter;
@@ -118,19 +124,21 @@ header div p {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    font-family: 'Josefin Sans', sans-serif;
+
 }
 #macro-btn {
-    width: 100%;
+    width: 920px;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-end;
 }
 #location-board, #macro-preferences, #get-places {
     width: 33%;
     margin: 10px;
 }
 .user-btn {
-    width: 100px;
-    height: 100px;
+    width: 145px;
+    height: 110px;
     border-radius: 50%;
 }
 #buttons {
@@ -162,14 +170,15 @@ button {
     margin-bottom: 5px;
     /* border: 1px solid #F1FAEE; */
     line-height: 25pt;
-    width: fit-content;
+    /* width: fit-content; */
     border-radius: 10px;
-    font-family: 'Yanone Kaffeesatz', sans-serif;
-    font-size: 16pt;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 20pt;
     color:  #D93B58;
 }
 button:hover, #calendar-day img:hover {
     box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
+    color: #4B8CA6;
 }
 /* #restaurant-name a:hover {
     box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #3498db;
@@ -191,10 +200,11 @@ button:hover, #calendar-day img:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
+
 }
-#location-board {
-    margin: 0;
-    padding: 0;
+#address-update-button button {
+    width: fit-content;
+    font-size: 12pt;
 }
 #address-submit {
     display: flex;
@@ -202,6 +212,8 @@ button:hover, #calendar-day img:hover {
 }
 #address-submit button {
     margin-right: 5px;
+    width: fit-content;
+    font-size: 12pt;
 }
 #center-button {
     display: grid;
@@ -215,6 +227,7 @@ button:hover, #calendar-day img:hover {
 }
 #categories-button {
     width: fit-content;
+    font-size: 14pt;
 }
 #wrap-btns {
     display: flex;
@@ -227,6 +240,7 @@ button:hover, #calendar-day img:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 14pt;
 }
 #macro-pref-btn {
     display: flex;
@@ -243,6 +257,9 @@ button:hover, #calendar-day img:hover {
     display: flex;
     justify-content: flex-end;
     width: 100%;
+}
+#submit-changes-button {
+    font-size: 12pt;
 }
 #restaurant-btn {
     display: grid;
@@ -308,8 +325,56 @@ button:hover, #calendar-day img:hover {
     font-family: 'Josefin Sans', sans-serif;
 }
 #search-rest-btn {
-    display: grid;
-    grid-template-rows: auto;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+#search-rest-btn button {
+    font-size: 14pt;
+    margin-right: 10px;
+}
+#restaurant-sort {
+    border: none;
+    border-radius: 10px;
+}
+#unique-place a{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+#unique-place a {
+    padding: 10px;
+    text-decoration: none;
+    color: #F1FAEE;
+    font-size: 14pt;
+}
+#hide-places-parent {
+    display: flex;
+    justify-content: flex-end;
+}
+#hide-places {
+    font-size: 14pt;
+}
+#places button {
+    font-size: 14pt;
+}
+.rating-price {
+    display: flex;
+    align-items: center;
+    /* border-bottom: .5px solid #D93B58; */
+}
+#unique-place:hover{
+    box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
+}
+.rating-price p{
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 5px;
+    margin-left: 10px;
+    color: #F1FAEE;
+    font-size: 14pt;
+    letter-spacing: 2px;
 }
 #macro-calendar {
     background-color: none;
@@ -345,13 +410,23 @@ button:hover, #calendar-day img:hover {
     background-repeat: no-repeat;
     background-position: center;
 }
+#day-container-container {
+    border: .25px solid #F1FAEE;
+    /* background-color: #d3d5d3; */
+}
 #day-container {
     border: 1px solid #D93B58;
     border-radius: 10%;
     margin: 3px;
-    background-color: #93AEBF;
-    height: 200px;
+    /* background-color: #93AEBF; */
+    height: 175px;
     width: 125px;
+}
+#day-container:hover {
+    box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
+}
+#day-container-a {
+    text-decoration: none;
 }
 #show-cal-btns {
     display: flex;
@@ -360,42 +435,51 @@ button:hover, #calendar-day img:hover {
 #calendar-day {
     height: 105px;
     width: 105px;
-    /* background-color: #F1FAEE; */
-    /* border: 2px solid #D93B58; */
-    margin: 5px;
+    padding-top: 10px;
+    /* margin-bottom: 5px; */
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24pt;
     font-family: 'Josefin Sans', sans-serif;
-}#calendar-day img {
+}
+#calendar-day img {
     width: 103px;
     height: 103px;
     border-radius: 50%;
     border: 2px solid #D93B58;
 }
 #restaurant-text {
-    height: 17px;
+    /* height: 17px; */
     padding-left: 5px;
     padding-top: 5px;
 }
 #restaurant-text p {
     margin: 0;
-    padding-bottom: 5px;
+    /* padding-bottom: 5px; */
 }
 #circle-container {
-    margin-top: 20px;
-    margin-bottom: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+}
+#circle-container p {
+    text-align: center;
 }
 #restaurant-name {
     font-family: 'Josefin Sans', sans-serif;
-    font-size: 14pt;
+    font-size: 12pt;
     padding-left: 2px;
-    height: 40px;
+    margin: 0%;
+    text-decoration: none;
+    color: #F1FAEE;
+    letter-spacing: -1px;
 }
 #restaurant-name a {
     text-decoration: none;
+    letter-spacing: -1px;
 }
 #restaurant-name a:hover {
     text-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;

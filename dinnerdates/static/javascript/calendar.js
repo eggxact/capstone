@@ -12,18 +12,23 @@ Vue.component("calendar-app", {
             <button v-show="showShow" type="submit" @click="showCalendar = true ; showHide = true ; showShow = false">Show Calendar</button>
         </div>
         <div v-show="showCalendar" id="calendar">
-            <div v-for="day in month" :key="day.index" id="day-container">
-                <div>
-                    <div id="restaurant-text">
-                        <p>{{ day.day }}</p>
-                    </div>
-                    <div id='circle-container'>
-                        <p id="restaurant-name"><a :href="day.restaurant_url" target="_blank">{{ day.restaurant_name }}</a></p>
-                        <div v-if="day.image_url !== ''" id="calendar-day">
-                            <a :href="day.restaurant_url" target="_blank"><img  :src="day.image_url"></a>
+            <div v-for="day in month" :key="day.index" id="day-container-container">
+                <div id="day-container">
+                    <div>
+                        <div id="restaurant-text">
+                            <p>{{ day.day }}</p>
                         </div>
+                        <a id="day-container-a" :href="day.restaurant_url" target="_blank">
+                            <div id='circle-container'>
+                                <p id="restaurant-name">{{ day.restaurant_name }}</p>
+                                <div v-if="day.image_url !== ''" id="calendar-day">
+                                    <img  :src="day.image_url">
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
+                </span>
             </div>
         </div>  
     </div>
@@ -42,6 +47,7 @@ Vue.component("calendar-app", {
             {details: {}, image_url: '', restaurant_url: '', month: 1, day: 31, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 2, day: 1, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 2, day: 2, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 2, day: 3, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 2, day: 4, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 2, day: 5, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 2, day: 6, restaurant_name: ''}
             ],
             restaurants: [],
+            restaurant_index: [],
         }
     },
     props: ['current-user'],
@@ -59,8 +65,23 @@ Vue.component("calendar-app", {
                     }
                 }
                 console.log(this.restaurants, 'this is restaurants',)
+                this.getRandomRestaurants()
                 this.postRestaurants()
             })
+        },
+        getRandomRestaurants: function () {
+            this.restaurant_index = []
+            for (let i=0; i<this.currentUser.frequency; i++) {
+                let num = Math.floor((Math.random() * (this.restaurants.length -1)))
+                while (true) {
+                    if (this.restaurant_index.includes(num)) {
+                        num = Math.floor((Math.random() * (this.restaurants.length -1)))
+                    }
+                    else {
+                        this.restaurant_index.push(num)
+                        break
+                    } 
+            }}
         },
         postRestaurants: function () {
             let nums = []
@@ -77,9 +98,9 @@ Vue.component("calendar-app", {
                 }
                 for (let y=0; y<(this.month.length); y++) {
                     if (this.month[y].day === num && this.month[y].month === 1) {
-                        this.month[y].restaurant_name = this.restaurants[i].restaurant
-                        this.month[y].restaurant_url = this.restaurants[i].restaurant_url
-                        this.month[y].image_url = this.restaurants[i].image_url
+                        this.month[y].restaurant_name = this.restaurants[this.restaurant_index[i]].restaurant
+                        this.month[y].restaurant_url = this.restaurants[this.restaurant_index[i]].restaurant_url
+                        this.month[y].image_url = this.restaurants[this.restaurant_index[i]].image_url
                         console.log(this.month[y])
                     }
                 } 

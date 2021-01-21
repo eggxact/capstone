@@ -1,25 +1,23 @@
 Vue.component("user-location", {
     template: `
     <div id="user-address">
-        <button class="user-btn" type="submit" @click="showAddress = !showAddress ; showUpdate = true">Address</button>
+        <button class="user-btn" type="submit" @click="showAddress = !showAddress ; showUpdate = true">address</button>
         <div v-show="showAddress">
             <p>{{ currentUser.address }}</p>
             <div id="address-update-button" >
-                <button v-show="showUpdate" type="submit" @click="showInputs = true ; showUpdate = false">Update</button>
+                <button v-show="showUpdate" type="submit" @click="showInputs = true ; showUpdate = false">add address</button>
             </div>
             <div v-show="showInputs">
-                <input class="address-input" v-model="street" type="text" placeholder="street"><br>
-                <input class="address-input" v-model="city" type="text" placeholder="city"><br>
-                <input class="address-input" v-model="state" type="text" placeholder="state"><br>
-                <input class="address-input" v-model="zipcode" type="text" placeholder="zip code">
+    
+                <input @keydown.enter="getLocation" class="address-input" v-model="street" type="text" placeholder="enter your address"><br>
                 <br>
                 <div id="address-submit">
-                    <button @click="getLocation" type="submit">Update Address</button>
-                    <button @click="showInputs = false ; showUpdate = true " type="submit">Cancel</button>
+                    <button @click="getLocation" type="submit">update address</button>
+                    <button @click="showInputs = false ; showUpdate = true " type="submit">cancel</button>
                 </div>
                 <div v-for="location in locations" :key=location.id id="address-verification">
                     <p>{{ location.formatted_address }}</p>
-                    <button type="submit" @click="submitLocation(location); showInputs = false ; showUpdate = true ">This is my address</button>
+                    <button type="submit" @click="submitLocation(location); showInputs = false ; showUpdate = true ">this is my address</button>
                 </div>
             </div>
         </div>

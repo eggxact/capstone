@@ -17608,7 +17608,7 @@ Vue.component("get-preferences", {
     template: `
     <div>
         <div id="center-button">
-            <button class="user-btn" type="submit" @click="showPreferences = !showPreferences">Preferences</button>
+            <button class="user-btn" type="submit" @click="showPreferences = !showPreferences">preferences</button>
         </div>
         <div v-show="showPreferences" id="preferences">
             <div id="macro-pref-btn">
