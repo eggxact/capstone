@@ -5,9 +5,9 @@ Vue.component("user-location", {
         <div v-show="showAddress">
             <p>{{ currentUser.address }}</p>
             <div id="address-update-button" >
-                <button v-show="showUpdate" type="submit" @click="show = !show ; showUpdate = !showUpdate">Update</button>
+                <button v-show="showUpdate" type="submit" @click="showInputs = true ; showUpdate = false">Update</button>
             </div>
-            <div v-show="show">
+            <div v-show="showInputs">
                 <input class="address-input" v-model="street" type="text" placeholder="street"><br>
                 <input class="address-input" v-model="city" type="text" placeholder="city"><br>
                 <input class="address-input" v-model="state" type="text" placeholder="state"><br>
@@ -15,11 +15,11 @@ Vue.component("user-location", {
                 <br>
                 <div id="address-submit">
                     <button @click="getLocation" type="submit">Update Address</button>
-                    <button @click="show = !show ; showUpdate = true " type="submit">Cancel</button>
+                    <button @click="showInputs = false ; showUpdate = true " type="submit">Cancel</button>
                 </div>
                 <div v-for="location in locations" :key=location.id id="address-verification">
                     <p>{{ location.formatted_address }}</p>
-                    <button type="submit" @click="submitLocation(location); show=!show">This is my address</button>
+                    <button type="submit" @click="submitLocation(location); showInputs = false ; showUpdate = true ">This is my address</button>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@ Vue.component("user-location", {
             state: '',
             zipcode: '',
             csrf_token: '', 
-            show: null,
+            showInputs: false,
             showAddress: null,
             showCancel: null,
             showUpdate: null,
@@ -46,7 +46,7 @@ Vue.component("user-location", {
         },
     },
     methods: {
-        getLocation: function (location) {
+        getLocation: function () {
             axios({
                 method: 'get',
                 url:  "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/place/findplacefromtext/json",

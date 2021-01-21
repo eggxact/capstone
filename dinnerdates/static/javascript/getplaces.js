@@ -17627,23 +17627,29 @@ Vue.component("get-preferences", {
                 </div>
             </div>
             <div v-show="showPrice" id="price">
-                <input v-model="currentUser.price" type="radio" name="price" value="1"> $</input><br>
-                <input v-model="currentUser.price" type="radio" name="price" value="2"> $$</input><br>
-                <input v-model="currentUser.price" type="radio" name="price" value="3"> $$$</input><br>
-                <input v-model="currentUser.price" type="radio" name="price" value="4"> $$$$</input><br>
+                <input class="price-symbol" v-model="currentUser.price" type="radio" name="price" value="1"> $</input><br>
+                <input class="price-symbol" v-model="currentUser.price" type="radio" name="price" value="2"> $$</input><br>
+                <input class="price-symbol" v-model="currentUser.price" type="radio" name="price" value="3"> $$$</input><br>
+                <input class="price-symbol" v-model="currentUser.price" type="radio" name="price" value="4"> $$$$</input><br>
             </div>
             <div v-show="showRating" id="rating">
-                <input v-model="currentUser.rating" type="radio" name="rating" value="1">&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="2">&#9734;&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="3">&#9734;&#9734;&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="4">&#9734;&#9734;&#9734;&#9734;</input><br>
-                <input v-model="currentUser.rating" type="radio" name="rating" value="5">&#9734;&#9734;&#9734;&#9734;&#9734;</input><br>
+                <input v-model="currentUser.rating" type="radio" name="rating" value="1" class="rating-stars">&#9734;</input><br>
+                <input v-model="currentUser.rating" type="radio" name="rating" value="2" class="rating-stars">&#9734;&#9734;</input><br>
+                <input v-model="currentUser.rating" type="radio" name="rating" value="3" class="rating-stars">&#9734;&#9734;&#9734;</input><br>
+                <input v-model="currentUser.rating" type="radio" name="rating" value="4" class="rating-stars">&#9734;&#9734;&#9734;&#9734;</input><br>
+                <input v-model="currentUser.rating" type="radio" name="rating" value="5" class="rating-stars">&#9734;&#9734;&#9734;&#9734;&#9734;</input><br>
             </div>
             <div v-show="showRange" id="distance">
-                <input v-model="currentUser.distance" v-on:scroll.passive="slider" type="range" min="1" max="25" value="2.5">  {{ currentUser.distance }}</input>                
+                <div id="distance-question">
+                    <p>How many miles would you like to stay within?</p>
+                </div>
+                <input v-model="currentUser.distance" v-on:scroll.passive="slider" type="range" min="1" max="25" value="2.5"><p id="actual-text">{{ currentUser.distance }}</p></input>                
             </div>
             <div v-show="showFrequency" id="frequency">
-                <input type="text" placeholder="dineout frequency" v-model="currentUser.frequency">frequency</input>
+                <div id="frequency-question">
+                    <p>How often per month would you like to dine out?</p>
+                </div>
+                <input type="range" min="1" max="30" v-on:scroll.passive="sliderFrequency" value="2.5" v-model="currentUser.frequency"><p id="actual-text">{{ currentUser.frequency }}</p></input>
             </div>
             <br>
             <div id="submit-btn">
@@ -17673,6 +17679,9 @@ Vue.component("get-preferences", {
     computed: {
         slider: function () {
             return this.currentUser.distance
+        },
+        sliderFrequency: function () {
+            return this.currentUser.frequency
         },
         categoryFilter: function () {
             return this.categories.filter(category => category.parents.includes("restaurants"))
@@ -17721,7 +17730,7 @@ Vue.component("get-places", {
         </div>
         <div v-show="showPlaceSearch" id="places">
             <div id="search-rest-btn">
-                <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = !showPlaces ; showButtons = !showButtons">Search</button> 
+                <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = true ; showButtons = true ; showHide = true ; showShow = false">Search</button> 
                 <div>
                     <label for="sort_by">Sort by:</label>
                     <select v-model="sort_by" name="sort_by">
@@ -17738,7 +17747,8 @@ Vue.component("get-places", {
             </div>
             <div v-show="showPlaces" id="places">
                 <div v-for="place in userPlaces" :key="place.id">
-                    <p>{{ place.name }} {{ place.rating }} {{ place.price }}</p>
+                    <a target="_blank" :href=" place.url "><p>{{ place.name }}</p></a>
+                    <p>{{ place.rating }} {{ place.price }}</p>
                 </div>
                 <button type="submit" @click="submitPlaces">Submit your restaurants</button>
             </div>
@@ -17782,7 +17792,6 @@ Vue.component("get-places", {
                 }
             }).then(response => {
                 this.places = response.data.businesses
-                console.log(this.places) 
                 this.sortPlaces()
             })
         },
@@ -17804,55 +17813,28 @@ Vue.component("get-places", {
             for (let i=0; i<nums.length; i++) {
                 let place = this.places[nums[i]] 
                 this.userPlaces.push(place)
-            }   
+            }  
+            console.log(this.userPlaces)
         },
         submitPlaces: function () {
-            this.restData = []
-            console.log(this.userPlaces, 'userPlaces')
+            // this.restData = []
             for (let i=0; i<this.userPlaces.length; i++) {
                 axios({
-                    method: 'get',
-                    url: `https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/${this.userPlaces[i].id}`,
+                    method: 'post',
+                    url: `/api/v1/restaurants/`,
                     headers: {
-                        Authorization: "Bearer eVtmegeYiRYnDl2BqqK31pjTCr4NjXJpS-pqNuFvobocPBHYmivDyghMjZ2xJJncuyXf4KW9iY4efs53hlGeNgCqIOSZNnZqrrDNTtQv2juo_rPjNPTczpMDGozrX3Yx",
+                        'X-CSRFToken': this.csrf_token
                     },
-                }).then(response => {
-                    axios({
-                        method: 'post',
-                        url: `/api/v1/restaurants/`,
-                        headers: {
-                            'X-CSRFToken': this.csrf_token
-                        },
-                        data: {
-                            user: this.currentUser.id,
-                            restaurant: this.userPlaces[i].name,
-                            restaurant_id: this.userPlaces[i].id,
-                            image_url: response.data.image_url,
-                            restaurant_url: response.data.url
-                        },
-                    }) 
-                })
+                    data: {
+                        user: this.currentUser.id,
+                        restaurant: this.userPlaces[i].name,
+                        restaurant_id: this.userPlaces[i].id,
+                        image_url: this.userPlaces[i].image_url,
+                        restaurant_url: this.userPlaces[i].url
+                    },
+                }) 
             }
         },
-        // submitForReal: function () {
-        //     console.log(this.restData)
-        //     for (let i=0; i<this.userPlaces.length; i++) {
-        //         axios({
-        //             method: 'post',
-        //             url: `/api/v1/restaurants/`,
-        //             headers: {
-        //                 'X-CSRFToken': this.csrf_token
-        //             },
-        //             data: {
-        //                 user: this.currentUser.id,
-        //                 restaurant: this.userPlaces[i].name,
-        //                 restaurant_id: this.userPlaces[i].id,
-        //                 image_url: this.restData.i.image_url,
-        //                 restaurant_url: this.restData.i.url
-        //             },
-        //         }) 
-        //     }
-        // }
     },
     mounted: function() {
         this.csrf_token = document.querySelector('input[name="csrfmiddlewaretoken"]').value

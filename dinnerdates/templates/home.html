@@ -2,10 +2,12 @@
 {% block content %}
 <div id='landing-page'>
     <div id='welcome-note'>
-        <div>
-            <h2 id="first-line">Welcome to</h2>
-            {% comment %} <h1 id="second-line"><a href="{% url 'dashboard:dashboard' %}">DinnerDates</a></h1> {% endcomment %}
-        </div>
+        <a href="{% url 'login' %}">
+            <div>
+                <h2 id="first-line">Welcome to</h2>
+                <h1 id="second-line">DinnerDates</h1>
+            </div>
+        </a>
     </div>
 </div>
 {% endblock %}

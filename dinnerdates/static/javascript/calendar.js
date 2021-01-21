@@ -1,27 +1,38 @@
 Vue.component("calendar-app", {
     template: `
     <div id="macro-calendar">
-        <h2>January</h2>
-        <button type="submit" @click="getRestaurants">Schedule dinner</button>
-        <div id="calendar">
+        <div id="month-title">
+            <h2>January 2021</h2>
+        </div>
+        <div id="schedule-dinner">
+            <button type="submit" @click="getRestaurants() ; showCalendar = true ; showHide = true">Schedule dinner</button>
+        </div>
+        <div id="show-cal-btns">
+            <button v-show="showHide" type="submit" @click="showCalendar = false ; showShow = true ; showHide = false">Hide Calendar</button>
+            <button v-show="showShow" type="submit" @click="showCalendar = true ; showHide = true ; showShow = false">Show Calendar</button>
+        </div>
+        <div v-show="showCalendar" id="calendar">
             <div v-for="day in month" :key="day.index" id="day-container">
                 <div>
                     <div id="restaurant-text">
                         <p>{{ day.day }}</p>
-                        <p id="restaurant-name"><a :href="day.restaurant_url">{{ day.restaurant_name }}</a></p>
                     </div>
                     <div id='circle-container'>
-                        <div id="calendar-day">
-                            <img src=day.image_url>
+                        <p id="restaurant-name"><a :href="day.restaurant_url" target="_blank">{{ day.restaurant_name }}</a></p>
+                        <div v-if="day.image_url !== ''" id="calendar-day">
+                            <a :href="day.restaurant_url" target="_blank"><img  :src="day.image_url"></a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>    
+        </div>  
     </div>
     `,
     data: function () {
         return {
+            showCalendar: false,
+            showHide: false,
+            showShow: false,
             month: [
             {details: {}, image_url: '', restaurant_url: '', month: 12, day: 27, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 12, day: 28, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 12, day: 29, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 12, day: 30, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 12, day: 31, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 1, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 2, restaurant_name: ''}, 
             {details: {}, image_url: '', restaurant_url: '', month: 1, day: 3, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 4, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 5, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 6, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 7, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 8, restaurant_name: ''}, {details: {}, image_url: '', restaurant_url: '', month: 1, day: 9, restaurant_name: ''},
@@ -53,7 +64,7 @@ Vue.component("calendar-app", {
         },
         postRestaurants: function () {
             let nums = []
-            for (let i=0; i<(this.restaurants.length); i++) {
+            for (let i=0; i<(this.currentUser.frequency); i++) {
                 let num = Math.floor((Math.random() * 30))
                 while (true) {
                     if (nums.includes(num)) {
