@@ -4,7 +4,7 @@ Vue.component("get-places", {
         <div id="restaurant-btn">
             <button class="user-btn" type="submit" @click="showPlaceSearch = !showPlaceSearch">restaurants</button>
         </div>
-        <div v-show="showPlaceSearch" id="places">
+        <div v-show="showPlaceSearch" id="macro-places">
             <div id="search-rest-btn">
                 <button type="submit" @click="places = [] ; getPlaces() ; showPlaces = true ; showButtons = true ; showHide = true ; showShow = false">search</button> 
                 <div>
@@ -25,12 +25,13 @@ Vue.component("get-places", {
                 <div id="unique-place" v-for="place in userPlaces" :key="place.id">
                     <a target="_blank" :href=" place.url ">{{ place.name }}
                     <div class="rating-price">
-                        <p>{{ place.rating }}</p><p>{{ place.price }}</p>
+                        <p id="rest-stars">{{ place.rating }} &#9734;'s  </p>
+                        <p id="rest-price">{{ place.price }}</p>
                     </div>
                     </a>
                 </div>
-                <button type="submit" @click="submitPlaces">submit your restaurants</button>
             </div>
+            <button id="rest-submit-btn" type="submit" @click="submitPlaces">submit your restaurants</button>
         </div>
     </div>
     `,
@@ -96,7 +97,7 @@ Vue.component("get-places", {
             console.log(this.userPlaces)
         },
         submitPlaces: function () {
-            // this.restData = []
+            console.log(this.userPlaces)
             for (let i=0; i<this.userPlaces.length; i++) {
                 axios({
                     method: 'post',

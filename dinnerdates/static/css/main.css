@@ -6,9 +6,37 @@ html {
     box-sizing: inherit;
 }
 body {
-    /* max-width: 100%; */
     background-color: #D93B58;
     margin: 0;
+}
+footer {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 200px;
+    color: #F1FAEE;
+    font-size: 14pt;
+    font-family: 'Josefin Sans', sans-serif;
+}
+#home-link-image {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+#home-link-image:hover {
+    box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58; 
+}
+#home-link-image a {
+    text-shadow: 1px 1px 2px #D93B58;
+    display: flex;
+    align-items: center;
+    font-family: 'Norican', cursive;
+    text-decoration: none;
+    color: #F1FAEE;
+    font-size: 18pt;
+}
+#home-page-link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 #main-div {
     display: flex;
@@ -18,6 +46,13 @@ body {
 #content {
     background-color:#4B8CA6;
     min-height: 100vh;
+}
+#signup-form ul{
+    display: none;
+}
+#signup-page h2, #signup-page p {
+    font-family: 'Josefin Sans', sans-serif;
+    color: #F1FAEE;
 }
 #landing-page {
     display: flex;
@@ -32,6 +67,7 @@ body {
 #login-logout {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 #login-logout p a:hover, #restaurant-name a:hover {
     color:  #D93B58;
@@ -42,6 +78,16 @@ body {
     margin-right: 10px;
     color: #F1FAEE;
     text-decoration: none;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 18pt
+}
+#login-logout p a {
+    text-shadow: 1px 1px 2px #D93B58;
+    text-decoration: none;
+    font-size: 24pt;
+}
+#logout-div:hover {
+    box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
 }
 .logout-img {
     margin-left: 5px;
@@ -90,7 +136,6 @@ body {
     text-shadow: 1px 1px 2px #D93B58;
     display: flex;
     justify-content: center;
-    /* margin: 0px 150px 0 150px;   */
     padding-bottom: 0px;   
     font-family: 'Norican', cursive;
     font-weight: lighter;
@@ -98,9 +143,6 @@ body {
     letter-spacing: 10px;
     line-height: 2;
     border-radius: 50%;
-}
-#header-h2:hover {
-    box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
 }
 header div p {
     margin: 0;
@@ -125,7 +167,6 @@ header div p {
     flex-wrap: wrap;
     justify-content: center;
     font-family: 'Josefin Sans', sans-serif;
-
 }
 #macro-btn {
     width: 920px;
@@ -143,20 +184,12 @@ header div p {
 }
 #buttons {
     width: 100%;
-    /* max-width: 300px; */
     margin-top: 50px;
-    /* margin-left: 25px; */
-    /* margin-right: 25px; */
-    /* padding-left: 5px; */
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-evenly;
-    /* display: grid; */
-    /* grid-template-rows: auto; */
     border-radius: 50%;
     background-color: none; 
-    /* border: 2px solid #F1FAEE; */
-    /* justify-items: flex-start; */
 }
 button {
     border-color: #D93B58;
@@ -168,9 +201,7 @@ button {
 button {
     margin-top: 5px;
     margin-bottom: 5px;
-    /* border: 1px solid #F1FAEE; */
     line-height: 25pt;
-    /* width: fit-content; */
     border-radius: 10px;
     font-family: 'Josefin Sans', sans-serif;
     font-size: 20pt;
@@ -180,9 +211,6 @@ button:hover, #calendar-day img:hover {
     box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
     color: #4B8CA6;
 }
-/* #restaurant-name a:hover {
-    box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #3498db;
-} */
 .cat-btns {
     border-radius: 50%;
 }
@@ -200,7 +228,6 @@ button:hover, #calendar-day img:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-
 }
 #address-update-button button {
     width: fit-content;
@@ -289,21 +316,9 @@ button:hover, #calendar-day img:hover {
     margin-left: 10px;
     letter-spacing: 5px;
 }
-/* #distance {
-    margin-top: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: #F1FAEE;
-    border: none;
-    border-radius: 10px;
-    color: #D93B58;
-    width: fit-content;
-    padding-right: 10px;
-} */
 #distance input {
     margin-left: 10px;
 }
-
 #frequency, #distance {
     background-color: #F1FAEE;
     border: none;
@@ -338,16 +353,23 @@ button:hover, #calendar-day img:hover {
     border: none;
     border-radius: 10px;
 }
-#unique-place a{
-    margin-top: 10px;
+#unique-place {
     display: flex;
+    flex-wrap: nowrap;
+}
+#unique-place {
+    margin: 0;
     justify-content: space-between;
+    align-items: center;
+}
+#unique-place a{
+    width: fit-content;
 }
 #unique-place a {
     padding: 10px;
     text-decoration: none;
     color: #F1FAEE;
-    font-size: 14pt;
+    font-size: 16pt;
 }
 #hide-places-parent {
     display: flex;
@@ -356,13 +378,30 @@ button:hover, #calendar-day img:hover {
 #hide-places {
     font-size: 14pt;
 }
+#rest-price {
+    font-weight: bolder;
+    font-size: 16pt;
+    color: rgb(28, 118, 19);
+}
+#rest-stars {
+    font-size: 16pt;
+    color: rgb(249, 199, 75);
+}
 #places button {
     font-size: 14pt;
 }
 .rating-price {
     display: flex;
     align-items: center;
-    /* border-bottom: .5px solid #D93B58; */
+}
+.rating-price p {
+    margin-left: 20px;
+    width: fit-content;
+}
+#macro-places {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 #unique-place:hover{
     box-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
@@ -375,6 +414,9 @@ button:hover, #calendar-day img:hover {
     color: #F1FAEE;
     font-size: 14pt;
     letter-spacing: 2px;
+}
+#rest-submit-btn {
+    font-size: 14pt;
 }
 #macro-calendar {
     background-color: none;
@@ -412,13 +454,11 @@ button:hover, #calendar-day img:hover {
 }
 #day-container-container {
     border: .25px solid #F1FAEE;
-    /* background-color: #d3d5d3; */
 }
 #day-container {
     border: 1px solid #D93B58;
     border-radius: 10%;
     margin: 3px;
-    /* background-color: #93AEBF; */
     height: 175px;
     width: 125px;
 }
@@ -436,7 +476,6 @@ button:hover, #calendar-day img:hover {
     height: 105px;
     width: 105px;
     padding-top: 10px;
-    /* margin-bottom: 5px; */
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -451,13 +490,11 @@ button:hover, #calendar-day img:hover {
     border: 2px solid #D93B58;
 }
 #restaurant-text {
-    /* height: 17px; */
     padding-left: 5px;
     padding-top: 5px;
 }
 #restaurant-text p {
     margin: 0;
-    /* padding-bottom: 5px; */
 }
 #circle-container {
     display: flex;
@@ -484,9 +521,13 @@ button:hover, #calendar-day img:hover {
 #restaurant-name a:hover {
     text-shadow: 0 0 10px 0 #D93B58 inset, 0 0 10px 4px #D93B58;
 }
-#category-div {
+#category-div{
     max-width: 200px;
     max-height: 200px;
+    overflow: auto;
+}
+#places {
+    max-height: 300px;
     overflow: auto;
 }
 .address-input {
@@ -502,7 +543,3 @@ p {
     font-family: 'Yanone Kaffeesatz', sans-serif;
     font-size: 14pt;
 }
-/* @media (min-width: 700px) {
-    #dashboard {
-        width: 75%;
-} */
